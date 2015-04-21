@@ -43,7 +43,7 @@
 
             <?php
                 try {
-                    $conn = new PDO('mysql:host=localhost;dbname=imageshare', 'root', 'Hibobhi02');
+                    $conn = new PDO('mysql:host=localhost;dbname=imageshare', 'root', 'pass');
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                     $page = $_GET["page"];

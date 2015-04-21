@@ -1,0 +1,27 @@
+/* CSS Document */
+
+.my-centre {
+	max-width:1200px;
+	margin:0 auto;
+}
+
+.extra-padding {
+	padding:15px;
+}
+
+img.my-thumb {
+	width:300px;
+	height:200px;
+}
+
+body { 
+	padding-top: 50px;
+}
+
+.no-padding {
+	padding:0;
+}
+
+.small-header {
+	font-size:14px;
+}
