@@ -5,16 +5,23 @@ delimiter //
 --    taken by someone else in the system.
 --
 
-create procedure users_usernameTaken(in i_username varchar(10), out taken bool)
+create procedure users_usernameTaken(in i_username varchar(10))
 begin
     declare temp int default 0;
     select count(*) into temp
     from users where username=i_username;
     if temp=0 then
-	set taken = false;
+	select 0 as result;
     else
-	set taken = true;
+	select 1 as result;
     end if;
+end//
+
+create procedure users_login(in i_username varchar(10),
+                             in i_pass varchar(20))
+begin
+    select * from users where i_username=username
+                        and i_pass=pass;
 end//
 
 --
@@ -79,8 +86,7 @@ end//
 --    returned, then the two folks are friends.
 
 create procedure users_areFriends(in i_username_1 varchar(10),
-				  in i_username_2 varchar(10),
-                                  out areFriends bool)
+				  in i_username_2 varchar(10))
 begin
     declare total int default 0;
     declare temp int default 0;
@@ -93,10 +99,17 @@ begin
           i_username_2=username1;
     set total:=total+temp;
     if total=2 then
-        set areFriends = true;
+        select 1 as result;
     else
-        set areFriends = false;
+        select 0 as result;
     end if;
+end//
+
+create procedure users_getFriends(in i_username varchar(10))
+begin
+    select username2 from friends
+    where username1=i_username and
+          username2<>i_username;
 end//
 
 -- 
@@ -143,8 +156,7 @@ end//
 
 create procedure users_isCameraOwned(in i_username varchar(10),
 				     in i_cam_model varchar(20),
-				     in i_cam_man varchar(20),
-                                     out owned bool)
+				     in i_cam_man varchar(20))
 begin
     declare temp int default 0;
     select count(*) into temp
@@ -152,9 +164,9 @@ begin
 			     i_cam_model=cam_model and
                              i_cam_man=cam_man;
     if count=1 then
-        set owned = true;
+        select 1 as result;
     else
-        set owned = false;
+        select 0 as result;
     end if;
 end//
 
@@ -199,17 +211,16 @@ end//
 --   of a group it is has placed it in.
 
 create procedure users_isUsersMedia(in i_media_id int, 
-				    in i_username varchar(10),
-				    out owns bool)
+				    in i_username varchar(10))
 begin
     declare temp int default 0;
     select count(*) into temp from media
     where i_media_id=ID and
           i_username=owner_name;
     if count=1 then
-        set owns = true;
+        select 1 as result;
     else
-	set owns = false;
+	select 0 as result;
     end if;
 end//
 
@@ -218,17 +229,16 @@ end//
 --
 
 create procedure users_isUsersAlbum(in i_album_id int,
-				    in i_username varchar(10),
-                                    out owns bool)
+				    in i_username varchar(10))
 begin
     declare temp int default 0;
     select count(*) into temp from media
     where i_album_id=ID and
           i_username=owner_name;
     if count=1 then
-        set owns = true;
+        select 1 as result;
     else
-        set owns = false;
+        select 0 as result;
     end if;
 end//
 
@@ -253,9 +263,8 @@ begin
     declare user_name varchar(10);
     select owner_name into user_name from media
     where ID=i_media_id;
-    call users_areFriends(i_username,user_name, permit);
+    call users_areFriends(i_username,user_name);
 end//
-    
 
 -- 
 --   This allows a user to delete a piece of media from an album

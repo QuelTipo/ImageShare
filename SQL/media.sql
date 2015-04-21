@@ -37,6 +37,8 @@ begin
 		on m.owner_name = u.username;
 end//
 
+call media_getByPk(1);
+
 --
 --    This allows us to retrieve the text description of a location
 --    when provided the longitude and latitude.
