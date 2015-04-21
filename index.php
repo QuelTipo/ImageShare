@@ -28,8 +28,8 @@
             Sign up now! It will only take a few seconds. No email required! You can add photos or videos, make friends,<br>
             join groups, share photos in albums, store photos privately, and so much more.</p>
             <p>
-            	<a class="btn btn-primary btn-lg" href="#" role="button">Sing Up</a>
-            	<a class="btn btn-primary btn-lg" href="index2.php" role="button">Sing In</a>
+            	<a class="btn btn-primary btn-lg" href="newuser.php" role="button">Sign Up</a>
+            	<a class="btn btn-primary btn-lg" href="index2.php" role="button">Sign In</a>
             </p>
         </div>
     </div>

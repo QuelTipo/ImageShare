@@ -29,13 +29,16 @@ end//
 --   displayname, and password
 --
 
+delimiter //
 create procedure users_enterUser(in i_username varchar(10),
 				 in i_displayname varchar(20),
-				 in i_pass varchar(20))
+				 in i_pass varchar(20),
+                                 in i_statement text)
 begin
-    insert into users (username,displayname,pass) 
-    values (i_username,i_displayname,i_pass);
+    insert into users (username,displayname,pass,statement) 
+    values (i_username,i_displayname,i_pass,i_statement);
 end//
+delimiter ;
 
 
 --

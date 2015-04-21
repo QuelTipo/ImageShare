@@ -114,7 +114,10 @@
                 $height = resizeHeight($height,$width);
                 $width = MAXWIDTH;
             }
+            echo '<div align="center">';
             echo '<a href="media.php?media='.$picture->ID.'"><img class="img-responsive" width="'.$width.'" height="'.$height.'" src ="Pictures/'.$_GET['user'].'/'.$picture->filename.'"/></a>';
+            echo '</div>';
+            
         }
         function isMovie($media) {
             if ($media->flag) {
