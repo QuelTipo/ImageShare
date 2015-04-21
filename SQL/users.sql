@@ -65,6 +65,12 @@ begin
     select displayname from users where i_username=username;
 end//
 
+
+create procedure users_getStatement(in i_username varchar(10))
+begin
+    select statement from users where i_username=username;
+end//
+
 --
 --   This is to retrieve the filename of a given piece of media based on the ID
 --   so we can retrieve the file and create a thumbnail for it.

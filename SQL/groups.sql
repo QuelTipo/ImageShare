@@ -10,6 +10,11 @@ end//
 -- This gets all the albums viewable by the person
 --   viewing the group page
 
+create procedure groups_getByPk(in i_id int)
+begin
+    select * from user_group where i_id=ID;
+end//
+
 create procedure groups_getAlbums(in i_id int, private bool)
 begin
     if private then
