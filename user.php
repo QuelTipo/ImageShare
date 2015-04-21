@@ -23,8 +23,8 @@ and open the template in the editor.
             while ($row = $media->fetch_object()) {
                 $info = getMediaInfo($row->ID);
                 getImageDetails($info);
-                getFriendList();
             }
+            getFriendList();
         ?>
     </body>
     <?php
@@ -47,7 +47,7 @@ and open the template in the editor.
                 $height = resizeHeight($height,$width);
                 $width = MAXWIDTH;
             }
-            echo '<img width="'.$width.'" height="'.$height.'" src ="Pictures/'.$_GET['user'].'/'.$picture->filename.'"/>';
+            echo '<a href="media.php?media='.$picture->ID.'"><img width="'.$width.'" height="'.$height.'" src ="Pictures/'.$_GET['user'].'/'.$picture->filename.'"/></a>';
         }
         function isMovie($media) {
             if ($media->flag) {
@@ -81,9 +81,17 @@ and open the template in the editor.
         }
         
         function getFriendList() {
-            
+            $connect = mysqli_connect('localhost','root','pass','imageshare');
+            $user = $_GET['user'];
+            $result = $connect->query("CALL users_getFriends('$user')") or die("Error");
+            while ($row = $result->fetch_object()) {
+                $connect = mysqli_connect('localhost','root','pass','imageshare') or die("Connect Error");
+                $name_rs = $connect->query("CALL users_getDisplayName('$row->username2')") or die ("Query Error");
+                $name_rs = $name_rs->fetch_object();
+                echo '<a href="user.php?user='.$row->username2.'">'.$name_rs->displayname.'</a>';
+                echo '<br />';
+            }         
         }
-        
         
     ?>
 </html>

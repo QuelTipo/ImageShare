@@ -44,7 +44,7 @@ call media_getByPk(1);
 --    when provided the longitude and latitude.
 
 create procedure media_getLocationDescription(in i_longitude decimal,
-											  in i_latitude decimal)
+					      in i_latitude decimal)
 begin
     select description from location where longitude=i_longitude and										   latitude=i_latitude;
 end//
