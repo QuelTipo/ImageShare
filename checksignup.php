@@ -30,7 +30,7 @@ and open the template in the editor.
                     header("location:newuser.php");
                 } else {
                     $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare') or die("Can't connect");
-                    $result = mysqli_query($connect,"CALL users_enterUser('$myusername','$mypassword','$mydisplayname','$mystatement')");
+                    $result = mysqli_query($connect,"CALL users_enterUser('$myusername','$mydisplayname','$mypassword','$mystatement')");
                     mkdir('Pictures/'.$myusername.'/',0777,true);
                     session_start();
                     $_SESSION['user'] = $myusername;
