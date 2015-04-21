@@ -13,11 +13,18 @@ and open the template in the editor.
        <nav class="navbar navbar-default navbar-fixed-top">
 		<div class="my-centre collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         	<div class="navbar-header">
-      			<a class="navbar-brand" href="#">ImageShare</a>
+      			<a class="navbar-brand" href="index.php">ImageShare</a>
             </div>
       		<ul class="nav navbar-nav">
-        		<li><a href="#">Home</a></li>
-        		<li><a href="#">Browse</a></li>
+                        <?php
+                            if($_SESSION['user']==null) {
+                                echo '<li><a href="index.php">Home</a></li>';
+                            } else {
+                                echo '<li><a href="profile.php?user=' . $_SESSION['user'] . '">Home</a></li>';
+                            }
+                        ?>
+                    <li><a href="browse.php?page=1">Browse</a></li>
+                                
       		</ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php

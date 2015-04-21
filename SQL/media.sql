@@ -172,9 +172,6 @@ begin
           i_cam_man = cam_man;
 end//
 
-delimiter //
-
-drop procedure media_getRecent//
 
 -- get media ordered by date added (using the auto increment id)
 create procedure media_getRecent(in i_page_num int)
@@ -206,6 +203,21 @@ begin
 	from media
 	where private = false and id >= lower and id <= upper
 	order by id desc;
+end//
+
+create procedure media_getMaxPage()
+begin
+	declare nextNum int;
+
+	SELECT `AUTO_INCREMENT`
+	FROM  INFORMATION_SCHEMA.TABLES
+	WHERE TABLE_SCHEMA = 'imageshare'
+	AND   TABLE_NAME   = 'media'
+	into nextNum;
+	set nextNum = nextNum - 1;
+	
+	select CEIL(nextNum/16) as maxPage from dual;
+
 end//
 
 delimiter ;

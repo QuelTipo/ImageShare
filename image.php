@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
@@ -26,7 +26,7 @@
             </div>
       		<ul class="nav navbar-nav">
         		<li><a href="#">Home</a></li>
-        		<li><a href="#">Browse</a></li>
+        		<li><a href="/browse.php?page=1">Browse</a></li>
       		</ul>
             <ul class="nav navbar-nav navbar-right">
             	<li><a href="#">Log In</a></li>
