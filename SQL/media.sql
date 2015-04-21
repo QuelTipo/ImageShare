@@ -46,7 +46,7 @@ call media_getByPk(1);
 create procedure media_getLocationDescription(in i_longitude decimal,
 					      in i_latitude decimal)
 begin
-    select description from location where longitude=i_longitude and										   latitude=i_latitude;
+    select description from location where longitude=i_longitude and latitude=i_latitude;
 end//
 
 -- Here we retrieve the comments associated with a piece of media.
@@ -170,6 +170,42 @@ begin
     select ID from media
     where i_cam_model = cam_model and
           i_cam_man = cam_man;
+end//
+
+delimiter //
+
+drop procedure media_getRecent//
+
+-- get media ordered by date added (using the auto increment id)
+create procedure media_getRecent(in i_page_num int)
+begin
+
+	declare nextNum int;
+	declare lower int;
+	declare upper int;
+
+	SELECT `AUTO_INCREMENT`
+	FROM  INFORMATION_SCHEMA.TABLES
+	WHERE TABLE_SCHEMA = 'imageshare'
+	AND   TABLE_NAME   = 'media'
+	into nextNum;
+	-- set nextNum = nextNum - 1;
+
+	set lower = nextNum + (-18*i_page_num);
+	set upper = lower + 17;
+
+	if lower < 1 then
+		set lower = 1;
+	end if;
+
+	if upper > nextNum then
+		set upper = nextNum;
+	end if;
+
+	select *
+	from media
+	where private = false and id >= lower and id <= upper
+	order by id desc;
 end//
 
 delimiter ;

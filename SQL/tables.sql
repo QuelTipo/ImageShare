@@ -1,4 +1,4 @@
---CREATE DATABASE imageshare;
+CREATE DATABASE imageshare;
 
 
 USE imageshare;

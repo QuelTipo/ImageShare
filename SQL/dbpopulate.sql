@@ -1,3 +1,5 @@
+use imageshare;
+
 INSERT INTO users
     (username,displayname,pass,statement)
 VALUES
