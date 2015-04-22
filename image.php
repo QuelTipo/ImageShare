@@ -19,44 +19,90 @@
 </head>
 
 <body>
-	<nav class="navbar navbar-default navbar-fixed-top">
-		<div class="my-centre collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        	<div class="navbar-header">
-      			<a class="navbar-brand" href="#">ImageShare</a>
-            </div>
-      		<ul class="nav navbar-nav">
-        		<li><a href="#">Home</a></li>
-        		<li><a href="/browse.php?page=1">Browse</a></li>
-      		</ul>
-            <ul class="nav navbar-nav navbar-right">
-            	<li><a href="#">Log In</a></li>
-            </ul>
-        </div>
-	</nav>
+    <?php include 'menu.php'
+    ?>
     <div class="my-centre">
         <div class="container">
             <div class="col-lg-12">
-                <h1 class="page-header">Image 1</h1>
+                <?php
+                try
+                {
+                    $conn = new PDO('mysql:host=localhost;dbname=imageshare', 'imageshare', 'sharemeplease!@#');
+                    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    
+                    $id = filter_input(INPUT_GET,'id');
+                    
+                    if(isset($_POST['tText']))
+                    {
+                        $ttext = filter_input(INPUT_POST, 'tText');
+                        $user = $_SESSION['user'];
+                        /*$queryText = 'call media_addComment(' . $id . ',';
+                        if(isset($user))
+                        {
+                            $queryText .= '"' . $user . '"';
+                        } else
+                        {
+                            $queryText .= 'NULL';
+                        }
+                        $queryText .= ', "' . $ttext . '")';*/
+                        $stmt = $conn->prepare('call media_addComment( :id, :user, :ttext)');
+                        $stmt->execute(array(
+                            ':id' => $id,
+                            ':user' => $user,
+                            ':ttext' => $ttext
+                          ));
+                        
+                        header('location /ImageShare/image.php?id=' . $id);
+                    }
+                    
+                    $imageCommand = $conn->query('call media_getInfoByPk( ' . $id . ')');
+                    
+                    $imageInfo = $imageCommand->fetchAll()[0];
+                   
+                    $imageCommand = null;
+                    
+                    $commentCommand = $conn->query('call media_getCommentsByPk( ' . $id . ')');
+                    
+                    $allComments = $commentCommand->fetchAll();
+                    
+                    $commentCommand = null;
+                    
+                } catch(PDOException $e) {
+                    echo 'ERROR: ' . $e->getMessage();
+                }
+                ?>
+                <h1 class="page-header"><?php echo $imageInfo['title'] ?></h1>
             </div>    
             <div class="col-lg-12">
             	<div class="panel panel-default">
                     <div class="panel-body">
                     	<div class="row text-center">
-                    		<img class="img-responsive" src="resources/292 - Df1htHM.jpg" alt="">
+                                <?php 
+                                if ($imageInfo['flag'] == 1) {
+                                    echo '<video controls ';
+                                } elseif ($imageInfo['flag'] == 0) {
+                                    echo '<img ';
+                                }
+                                echo 'class="img-responsive" src="Pictures/' . $imageInfo['owner_name'] . '/' . $imageInfo['filename'] . '" alt="">';
+                                ?>
                         </div>
                     </div>
                     <div class="caption">
                         <p>
-                            Cras at justo ipsum. Maecenas ultrices volutpat eros, vel consequat tellus. Ut iaculis pretium ultrices. Duis eleifend porta mi quis tempor. Praesent eu felis vel quam fringilla lobortis. Etiam ut finibus neque, semper dignissim lectus. Aliquam quis mollis velit, in porttitor odio. Mauris varius fringilla arcu, vel euismod turpis tincidunt vel. Vivamus eu elit sit amet eros dignissim venenatis a vitae odio.
+                            <?php echo $imageInfo['description'] ?>
                         </p>
                         <div class="info">
                             <p>
-                                Taken by: <a href="#">Joe Shmoe</a><br>
-                                Added on June, 13 2015</br>
-                                Resolution: 1080x720
-                                <a href="#" class="pull-right">Cannon Powershot</a><br>
-                                <a href="#" class="pull-right">Calgary, Alberta Canada</a>
-                                Part of album: <a href="#">Calgary At It's Finest</a>
+                                Taken by: <a href="profile.php?username=<?php echo $imageInfo['username'] ?>"><?php echo $imageInfo['displayname'] ?></a><br>                                
+                                Added on <?php echo date('F jS\, Y', strtotime(str_replace('-','/', $imageInfo['upload_date'])))?></br>
+                                Resolution: <?php echo $imageInfo['height'] . 'x' . $imageInfo['width'] ?>
+                                <a href="#" class="pull-right"><?php echo $imageInfo['manufacturer'] . ' ' . $imageInfo['model'] ?></a><br>
+                                <a href="#" class="pull-right"><?php echo $imageInfo['location'] ?></a>
+                                <?php if($imageInfo['album_id'] != null) { ?>
+                                    Part of album: <a href="album.php?id=<?php echo $imageInfo['album_id']?>"><?php echo $imageInfo['album_title'] ?></a>
+                                <?php } else { ?>
+                                    <br>
+                                <?php } ?>
                             </p>
                         </div>
                     </div>
@@ -68,32 +114,25 @@
                     </div>
                 	<div class="panel-body">
                        	<ul class="list-unstyled">
-                        	<li>
+                            <?php foreach($allComments as $comment) { ?>
+                            <li>
                                 <div class="col-lg-10">
-                                    <b><a href="#">Freddy K</a>:</b> I love this!
+                                    <b>
+                                        <?php 
+                                        if (empty($comment['username'])) { 
+                                            echo 'anonymous:';
+                                        } else {
+                                            echo '<a href="profile.php?username=' . $comment['username'] . '"> ' . $comment['username'] . ' </a>:';
+                                        }
+                                        ?>
+                                    </b><?php echo $comment['tText'] ?>
                                 </div>
                                 <div class="col-lg-2">
-                                    <span class="pull-right"><small>June, 14 2015</small></span>
+                                    <span class="pull-right"><small><?php echo date('F jS\, Y', strtotime(str_replace('-','/', $comment['comment_date'])))?></small></span>
                                 </div>
                             </li>
                             <br>
-                            <li>
-                                <div class="col-lg-10">
-                                    <b><a href="#">Bobby Al</a>:</b> Vivamus tristique tempus quam, id finibus quam rutrum vitae. Ut eu risus lorem. Aenean commodo risus lacus. Curabitur arcu dolor, tincidunt non est et, rutrum vehicula neque. Nullam in sodales augue. Fusce finibus viverra iaculis. Praesent mollis auctor augue, a cursus elit tempor at. Nullam mi nunc, ultrices vitae ante ut, euismod aliquam libero.
-                                </div>
-                                <div class="col-lg-2">
-                                    <span class="pull-right"><small>June, 15 2015</small></span>
-                                </div>
-                            </li>
-                            <br>
-                            <li>
-                                <div class="col-lg-10">
-                                    <b><a href="#">Willy Bill</a>:</b> The contrast is amazing
-                                </div>
-                                <div class="col-lg-2">
-                                    <span class="pull-right"><small>June, 16 2015</small></span>
-                                </div>
-                            </li>
+                            <?php } ?>
                         </ul>
                     </div>
                 </div>
@@ -103,8 +142,8 @@
                         <h4>Add new comment</h4>
                     </div>
                 	<div class="panel-body">
-                       	<form action="#">
-                        	<textarea class="form-control no-resize-ta" rows="5"></textarea>
+                       	<form action="#" method="post">
+                        	<textarea name="tText" class="form-control no-resize-ta" rows="5"></textarea>
                             <button class="btn btn-default pull-right">Submit</button>
                         </form>
                     </div>

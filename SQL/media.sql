@@ -12,10 +12,25 @@ end//
 
 -- This procedure is used to add a comment to a piece of a media.
 
-create procedure media_addComment(in i_media_id int, in i_number int, in i_username varchar(10), in i_tText text)
+
+create procedure media_addComment(in i_media_id int, in i_username varchar(10), in i_tText text)
 begin
-    insert into comments (mediaID, comment_number, username, tText, comment_date) values (i_media_id, i_number, i_username, i_tText, CURDATE());
+	declare nextNum int;
+	
+	select max(comment_number)
+	from comments
+	where mediaID = i_media_id
+	into nextNum;
+	
+	if nextNum is null then
+		set nextNum = 0;
+	end if;
+
+	set nextNum = nextNum + 1;
+
+    insert into comments (mediaID, comment_number, username, tText, comment_date) values (i_media_id, nextNum, i_username, i_tText, CURDATE());
 end//
+
 
 -- Here we retrieve all of the info of piece of media when provided the
 --  primary key

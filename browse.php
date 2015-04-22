@@ -32,7 +32,7 @@
                 try {
                     $conn = new PDO('mysql:host=localhost;dbname=imageshare', 'imageshare', 'sharemeplease!@#');
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+                    
                     $page = filter_input(INPUT_GET,'page');
                     
                     $maxCmd = $conn->query("call media_getMaxPage()");
@@ -58,7 +58,7 @@
                             <a class="thumbnail" href="<?php echo 'image.php?id=' . $aThumb['ID'];?>">
                                 <?php 
                                 if ($aThumb['flag'] == 1) {
-                                    echo '<video ';
+                                    echo '<video autoplay loop muted ';
                                 } elseif ($aThumb['flag'] == 0) {
                                     echo '<img ';
                                 }

@@ -124,7 +124,7 @@ CREATE TABLE GROUP_MEMBERS(
 CREATE TABLE COMMENTS(
 	mediaID int,
 	comment_number int,
-	username varchar(10),
+	username varchar(10) null,
 	tText text,
     comment_date timestamp,
 	foreign key(username) references USERS(username),
