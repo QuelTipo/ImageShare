@@ -18,9 +18,9 @@ end//
 create procedure groups_getAlbums(in i_id int, private bool)
 begin
     if private then
-        select * from albums where group_id=i_id;
+        select * from album where group_id=i_id;
     else
-        select * from albums where group_id=i_id and private=false;
+        select * from album where group_id=i_id and private=false;
     end if;
 end//
 
@@ -28,7 +28,11 @@ end//
 
 create procedure groups_getMembers(in i_id int)
 begin
-    select username from group_members where groupID=i_id;
+    select u.username, u.displayname from
+	group_members gm
+	inner join users u
+		on gm.userID = u.username
+	where groupID=i_id;
 end//
 
 -- Rather than incorporating verification into all of the
@@ -93,7 +97,7 @@ end//
 -- This procedure will be invoked by the admin to add the
 --   prospective group member into the group
 
-create procedure addMember(in i_username_1 varchar(10), in i_ID int)
+create procedure groups_addMember(in i_username_1 varchar(10), in i_ID int)
 begin
     insert into group_members (groupID,username) values (i_ID,i_username_1);
 end//
@@ -101,10 +105,23 @@ end//
 -- This procedure will be invoked by the admin to remove a group
 --   member from the group
 
-create procedure removeMember(in i_username varchar(10), in i_ID int)
+create procedure groups_removeMember(in i_username varchar(10), in i_ID int)
 begin
     delete from group_members where groupID=i_ID and
 				    username=i_username;
+end//
+
+delimiter //
+
+create procedure groups_getMedia(in i_id int, in i_private boolean)
+begin
+	select m.*
+	from media m
+	inner join album_of_media am
+		on am.mediaID = m.id
+	inner join album a
+		on a.id = am.albID
+	where a.group_id=i_id and a.private=i_private;
 end//
 
 delimiter ;
