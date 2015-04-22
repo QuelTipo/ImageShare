@@ -222,7 +222,8 @@ end//
 --   This is used to assert whether or not a piece of media belongs
 --   to somebody before changes can be made to it. Useful also
 --   for when a user wants to remove a piece of media from the album
---   of a group it is has placed it in.
+--   of a group it is has placed it in.d
+
 
 create procedure users_isUsersMedia(in i_media_id int, 
 				    in i_username varchar(10))
@@ -231,7 +232,7 @@ begin
     select count(*) into temp from media
     where i_media_id=ID and
           i_username=owner_name;
-    if count=1 then
+    if temp=1 then
         select 1 as result;
     else
 	select 0 as result;
@@ -246,15 +247,16 @@ create procedure users_isUsersAlbum(in i_album_id int,
 				    in i_username varchar(10))
 begin
     declare temp int default 0;
-    select count(*) into temp from media
+    select count(*) into temp from album
     where i_album_id=ID and
           i_username=owner_name;
-    if count=1 then
+    if temp=1 then
         select 1 as result;
     else
         select 0 as result;
     end if;
 end//
+
 
 --
 --   This is called when a user desires adding a piece of media to an album.

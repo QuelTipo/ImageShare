@@ -37,6 +37,28 @@ begin
 end//
 
 
+create procedure album_getPhotosNotAdded(in i_username varchar(10),
+                                         in i_albumid int)
+begin
+    select m.ID,m.title from media as m
+    where m.owner_name=i_username and
+        m.ID not in 
+        (select mediaID from album_of_media
+         where albID = i_albumid);
+          
+end//
+
+delimiter //
+create procedure album_getUsersPhotosAdded(in i_username varchar(10),
+                                           in i_albumid int)
+begin
+    select m.ID,m.title from media as m
+    where m.owner_name=i_username and
+        m.ID in 
+        (select mediaID from album_of_media
+         where albID = i_albumid);
+end//
+delimiter ;
 
 -- This deletes an album. Clearly you're going to want to check if it belongs
 -- to the entity doing the deleting first by using users_isUsersAlbum
