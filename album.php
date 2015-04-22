@@ -37,86 +37,7 @@
                 </h1>
             </div>
 
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/446 - 5n3nQZ2.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/337 - zy7BN74.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/295 - mztADb6.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/306 - vgwkxGy.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/304 - cMDytNw.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/395 - JtoAFYj.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/495 - DjtK3iu.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/746 - BBoJhFc.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/838 - 30w6r9k.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/870 - gh7GOMS.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/703 - PuvKarX.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/527 - KTUNbGb.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/317 - jXeYQ6W.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/533 - tMo8ule.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/834 - uQUS5za.jpg" alt="">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive my-thumb" src="resources/849 - kP3lORr.jpg" alt="">
-                </a>
-            </div>
+            <?php getAlbumMediaThumbnails($album);?>
             <nav>
               	<ul class="pager">
                 	<li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Previous</a></li>
@@ -131,30 +52,46 @@
                 $connect=mysqli_connect('localhost','root','Hibobhi02','imageshare');
                 $result=$connect->query("call users_getDisplayName('$album->owner_name')") or die("Query error");
                 $result=$result->fetch_object();
-                echo 'Owner Name: <a href="user.php?='.$album->owner_name.'">'.$result->displayname.'</a>';
+                echo 'Owner Name: <a href="user.php?user='.$album->owner_name.'">'.$result->displayname.'</a>';
             } else {
                $connect=mysqli_connect('localhost','root','Hibobhi02','imageshare');
                 $result=$connect->query("call groups_getByPk('$album->group_id')") or die("Query error");
                 $result=$result->fetch_object();
-                echo 'Owner Group: <a href="group.php?="'.$album->group_id.'">'.$result->group_name.'</a>';
+                echo 'Owner Group: <a href="group.php?group="'.$album->group_id.'">'.$result->group_name.'</a>';
             }
         }
         
+        
+        
         function getAlbumMediaThumbnails($album) {
             $canview = 0;
-            $connect=mysqli_connect('localhost','root','Hibobhi02','imageshare');
-            $result=$connect->query("call album_getImagesByPk('$album->ID'");
+            $connect=mysqli_connect('localhost','root','Hibobhi02','imageshare') or die("Connect error");
+            $result=$connect->query("call album_getImagesByPk('$album->ID')") or die("Query error");
             while($image=$result->fetch_object()) {
-                $connect1=mysql_connect('localhost','root','Hibobhi02','imageshare');
+                $connect1=mysqli_connect('localhost','root','Hibobhi02','imageshare');
                 $user = $_SESSION['user'];
                 $result1=$connect1->query("call users_canViewMedia('$image->ID','$user')");
                 $result1=$result1->fetch_object();
-                $canview;
-                if ($album->group_id == null)  {
-                    
+                $canview=$result1->result;
+                if (($album->group_id != null) && (canview==0))  {
+                    $connect2=mysqli_connect('localhost','root','Hibobhi02','imageshare');
+                    $result3=$connect3->query("call groups_isMember('$user','$album->group_id')");
+                    $result3=$result3->fetch_object();
+                    $canview=$result3->result;
+                }
+                if ($canview == 1) {
+                    getImageThumb($image);
                 }
             }
             
+        }
+        
+        function getImageThumb($image) {
+            echo '<div class="col-lg-3 col-md-4 col-xs-6 thumb">';
+                echo '<a class="thumbnail" href="image.php?id='.$image->ID.'">';
+                    echo '<img class="img-responsive my-thumb" src="Pictures/'.$image->owner_name.'/'.$image->filename.'" alt="">';
+                echo '</a>';
+            echo '</div>';
         }
     ?>
 </body>

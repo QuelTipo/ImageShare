@@ -37,6 +37,7 @@ begin
 end//
 
 
+
 -- This deletes an album. Clearly you're going to want to check if it belongs
 -- to the entity doing the deleting first by using users_isUsersAlbum
 -- (or groups_isGroupsAlbum).
