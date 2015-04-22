@@ -14,7 +14,7 @@ end//
 
 create procedure media_addComment(in i_media_id int, in i_number int, in i_username varchar(10), in i_tText text)
 begin
-    insert into comments (mediaID, comment_number, username, tText) values (i_media_id, i_number, i_username, i_tText);
+    insert into comments (mediaID, comment_number, username, tText, comment_date) values (i_media_id, i_number, i_username, i_tText, CURDATE());
 end//
 
 -- Here we retrieve all of the info of piece of media when provided the
@@ -22,22 +22,26 @@ end//
 
 create procedure media_getInfoByPk(in i_id int)
 begin
-	select 	m.title, m.height, m.width, m.filename, m.description, m.flag, m.private,
+	select 	m.id, m.title, m.height, m.width, m.filename, m.description, m.flag, m.private, m.owner_name, m.upload_date,
 			c.model, c.manufacturer,
-			l.longitude, l.latitude, l.description, 
-			u.username
+			l.longitude, l.latitude, l.description as location, 
+			u.username, u.displayname,
+			a.id as album_id, a.title as album_title
 	from media m
 	inner join camera c
 		on m.cam_model = c.model and
-		m.cam_man = c.manufacturer
+		m.cam_man = c.manufacturer and
+		m.id = i_id
 	inner join location l
 		on m.longitude = l.longitude and
-		m.latitiude = l.latitude
+		m.latitude = l.latitude
 	inner join users u
-		on m.owner_name = u.username;
+		on m.owner_name = u.username
+	left outer join album_of_media am
+		on am.mediaID = m.id
+	left outer join album a
+		on a.id = am.albID;
 end//
-
-call media_getByPk(1);
 
 --
 --    This allows us to retrieve the text description of a location
@@ -53,9 +57,10 @@ end//
 
 create procedure media_getCommentsByPk(in i_id int)
 begin
-	select c.comment_number, c.username, c.tText
+	select c.comment_number, c.username, c.tText, c.comment_date
 	from comments c
-	where mediaId = i_id;
+	where mediaId = i_id
+	order by c.comment_number;
 end//
 
 -- This procedure allows us to add a new piece of media to the database.
@@ -92,7 +97,8 @@ begin
     private,
 	flag,
 	extraparam1,
-	extraparam2)
+	extraparam2,
+	upload_date)
 	values
 	(i_title,
 	i_height,
@@ -107,7 +113,8 @@ begin
 	i_owner_name,
 	i_flag,
 	i_extraparam1,
-	i_extraparam2);
+	i_extraparam2,
+	CURDATE());
 
 end//
 
