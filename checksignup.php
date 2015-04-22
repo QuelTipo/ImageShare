@@ -31,6 +31,8 @@ and open the template in the editor.
                 } else {
                     $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare') or die("Can't connect");
                     $result = mysqli_query($connect,"CALL users_enterUser('$myusername','$mydisplayname','$mypassword','$mystatement')");
+                    $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare') or die("Can't connect");
+                    $result = mysqli_query($connect,"CALL users_addNewFriend('$myusername','$myusername')");
                     mkdir('Pictures/'.$myusername.'/',0777,true);
                     session_start();
                     $_SESSION['user'] = $myusername;

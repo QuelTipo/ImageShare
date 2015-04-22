@@ -93,7 +93,7 @@
                                 <a href="#" class="pull-right"><?php echo $imageInfo['manufacturer'] . ' ' . $imageInfo['model'] ?></a><br>
                                 <a href="#" class="pull-right"><?php echo $imageInfo['location'] ?></a>
                                 <?php if($imageInfo['album_id'] != null) { ?>
-                                    Part of album: <a href="album.php?id=<?php echo $imageInfo['album_id']?>"><?php echo $imageInfo['album_title'] ?></a>
+                                    Part of album: <a href="album.php?album=<?php echo $imageInfo['album_id']?>"><?php echo $imageInfo['album_title'] ?></a>
                                 <?php } else { ?>
                                     <br>
                                 <?php } ?>
@@ -116,7 +116,7 @@
                                         if (empty($comment['username'])) { 
                                             echo 'anonymous:';
                                         } else {
-                                            echo '<a href="profile.php?username=' . $comment['username'] . '"> ' . $comment['username'] . ' </a>:';
+                                            echo '<a href="profile.php?user=' . $comment['username'] . '"> ' . $comment['username'] . ' </a>:';
                                         }
                                         ?>
                                     </b><?php echo $comment['tText'] ?>

@@ -74,6 +74,7 @@
                             <?php getAlbumList();?>
                             
                         </ul>
+                        <hr>
                         <?php 
                             if ($_GET['user']==$_SESSION['user']) {
                                 $user = $_GET['user'];
@@ -94,6 +95,16 @@
                         <ul>
                             <?php getGroupList();?>
                         </ul>
+                        <hr>
+                        <?php 
+                            if ($_GET['user']==$_SESSION['user']) {
+                                $user = $_GET['user'];
+                                echo '<form action="addGroup.php" method="post" enctype="multipart/form-data">
+                                   Group Name:<input type="text" name="group_name"><br>
+                                   <input type="submit" value="Create New Group" name="submit"><br>
+                                   </form>';
+                            }
+                        ?>
                     </div>
                 </div>
                 <div class="panel panel-default">

@@ -40,12 +40,6 @@
             <?php getSideBar($album); ?>
             <div class="col-lg-10">
             <?php getAlbumMediaThumbnails($album);?>
-            <nav>
-              	<ul class="pager">
-                	<li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Previous</a></li>
-                	<li class="next"><a href="#">Next <span aria-hidden="true">&rarr;</span></a></li>
-              	</ul>
-            </nav>
             </div>
             
             
@@ -119,7 +113,7 @@
                 $result=$result->fetch_object();
                 $needSideBar = $result->result;
             } else {
-                $result=$connect->query("call groups_isMember2('$viewer','$album->group_id')");
+                $result=$connect->query("call groups_isMember('$viewer','$album->group_id')");
                 $result=$result->fetch_object();
                 $needSideBar = $result->result;
             }

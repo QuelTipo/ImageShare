@@ -91,9 +91,10 @@
             }
             if($isAdmin)
             {
-                echo '<form action="addGroupAlbum.php" method="post">';
+                echo '<hr>';
+                echo '<form action="addMember.php" method="post">';
                     echo '<input type="submit" name="submit" value="Add Member">';
-                    echo '<input type="text" placeholder="album name" name="album">';
+                    echo '<input type="text" placeholder="username" name="user">';
                     echo '<input type="text" hidden name="group" value="' . $id . '">';
                 echo '</form>';
             }
@@ -111,9 +112,11 @@
             
             if($isAdmin)
             {
-                echo '<form action="addMember.php" method="post">';
-                    echo '<input type="submit" name="submit" value="Add Member">';
-                    echo '<input type="text" placeholder="username" name="user">';
+                echo '<hr>';
+                echo '<form action="addGroupAlbum.php" method="post">';
+                    echo '<input type="submit" name="submit" value="Add Album">';
+                    echo '<input type="text" placeholder="album name" name="title">';
+                    echo 'Private:<input type="checkbox" name="private">';
                     echo '<input type="text" hidden name="group" value="' . $id . '">';
                 echo '</form>';
             }
@@ -124,27 +127,26 @@
             global $allMedia;
             foreach ($allMedia as $curMedia)
             {
+                
                 echo '<div class="panel panel-default">';
                     echo '<div class="panel-heading">';
                         echo '<h3>' . $curMedia['title'] . '</h3>';
                     echo '</div>';
                     echo '<div class="panel-body">';
                         echo '<div class="row text-center">';
+                            echo '<a href="image.php?id=' . $curMedia['ID'] .'">';
                                 if ($curMedia['flag'] == 1) {
                                     echo '<video controls ';
                                 } elseif ($curMedia['flag'] == 0) {
                                     echo '<img ';
                                 }
                                 echo 'class="img-responsive" src="Pictures/' . $curMedia['owner_name'] . '/' . $curMedia['filename'] . '" alt="">';
+                            echo '</a>';
                         echo '</div>';
                     echo '</div>';
                     echo '<div class="caption">';
                         echo '<div>';
                             echo $curMedia['description'];
-                        echo '</div>';
-                        echo '<div class="text-right">';
-                            echo '<a href="#">Cannon Powershot</a><br>';
-                            echo '<a href="#">Calgary, Alberta Canada</a>';
                         echo '</div>';
                     echo '</div>';
                 echo '</div>';

@@ -1,10 +1,21 @@
+use imageshare;
 delimiter //
 
 -- This creates a new group with the person who created it as the admin. */
-
+drop procedure groups_newGroup//
 create procedure groups_newGroup(in i_username_1 varchar(10), in i_group_name varchar(10))
 begin
-    insert into user_group(group_name,admin) values (i_group_name,i_username_1);
+	declare nextNum int;
+    
+	insert into user_group(group_name,admin) values (i_group_name,i_username_1);
+	
+	SELECT `AUTO_INCREMENT`
+	FROM  INFORMATION_SCHEMA.TABLES
+	WHERE TABLE_SCHEMA = 'imageshare'
+	AND   TABLE_NAME   = 'user_group'
+	into nextNum;
+
+	select nextNum - 1 as id;
 end//
 
 -- This gets all the albums viewable by the person
@@ -98,9 +109,13 @@ end//
 -- This procedure will be invoked by the admin to add the
 --   prospective group member into the group
 
+delimiter //
+
+drop procedure groups_addMember;
+
 create procedure groups_addMember(in i_username_1 varchar(10), in i_ID int)
 begin
-    insert into group_members (groupID,username) values (i_ID,i_username_1);
+    insert into group_members (groupID,userID) values (i_ID,i_username_1);
 end//
 
 -- This procedure will be invoked by the admin to remove a group
@@ -109,7 +124,7 @@ end//
 create procedure groups_removeMember(in i_username varchar(10), in i_ID int)
 begin
     delete from group_members where groupID=i_ID and
-				    username=i_username;
+				    userID=i_username;
 end//
 
 delimiter //

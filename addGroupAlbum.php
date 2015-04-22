@@ -22,33 +22,23 @@ try {
         $isAdmin = $temp->fetchColumn();
         $temp->closeCursor();
     }
-    $existsQ = $conn->query('call users_usernameTaken("' . $username . '")');
-    $temp = $existsQ->fetchAll();
-    $userExists = $temp[0][0];
-    $existsQ->closeCursor();
-    
-    print_r($userExists);
-    echo '<br>';
-    
-    if($userExists == 0)
-    {
-        echo '<script>alert("the specified user does not exist");window.location.replace("group.php?group=' . $group . '");</script>';
-        $isAdmin = false;
-    }
     
     if($isAdmin)
     {
-        $addQ = $conn->prepare('call groups_addMember(:username, :groupId)');
+        $private = false;
+        if(isset($_POST['private']))
+        {
+            $private = true;
+        }
+        $addQ = $conn->prepare('call groups_createAlbum(:title, :private, :groupID)');
         $addQ->execute( array(
-                ':username' => $username,
-                ':groupId' => $group));
+                ':title' => filter_input(INPUT_POST, 'title'),
+                ':private' => $private ? 'true' : 'false',
+                ':groupID' => filter_input(INPUT_POST, 'group')));
         $addQ->closeCursor();
         
     }
-    if($userExists == 1)
-    {
-        header('location: group.php?group=' . $group);
-    }
+    header('location: group.php?group=' . $group);
 
 } catch(PDOException $e) {
     echo 'ERROR: ' . $e->getMessage();
