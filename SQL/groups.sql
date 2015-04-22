@@ -56,8 +56,21 @@ end//
 
 -- We do the same with group members as we do with admins.*/
 
-delimiter //
 create procedure groups_isMember(in i_username_1 varchar(10),
+				 in group_id int,
+				 out i_member bool)
+begin
+    declare temp int default 0;
+    select count(*) into temp
+    from group_members where group_id=groupID and i_username_1=userID;
+    if temp=1 then
+        set i_member = true;
+    else
+        set i_member = false;
+    end if;
+end//
+
+create procedure groups_isMember2(in i_username_1 varchar(10),
 				 in group_id int)
 begin
     declare temp int default 0;
@@ -69,7 +82,7 @@ begin
         select 0 as result;
     end if;
 end//
-delimiter ;
+
 
 -- This checks to see if a particular album belongs to a group.
 

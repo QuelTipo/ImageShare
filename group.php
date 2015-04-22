@@ -104,7 +104,7 @@
             foreach ($allAlbums as $curAlbum)
             {
                 echo '<li>';
-                    echo '<a href=album.php?id="' . $curAlbum['ID'] . '">' . $curAlbum['title'] . '</a>';
+                    echo '<a href="album.php?album=' . $curAlbum['ID'] . '">' . $curAlbum['title'] . '</a>';
                 echo '</li>';
             }
         }
