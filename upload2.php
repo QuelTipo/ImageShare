@@ -108,7 +108,7 @@
             } catch(PDOException $e) {
                 echo 'ERROR: ' . $e->getMessage();
             }
-            //header('location profile.php?user=' . $_SESSION['user']);
+            header('location: profile.php?user=' . $_SESSION['user']);
         } else {
             echo "Sorry, there was an error uploading your file.";
         }

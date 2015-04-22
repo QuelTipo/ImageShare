@@ -123,7 +123,7 @@
                                 </div>
                             </li>
                             <br>
-                            <?php } ?>Hibbard
+                            <?php } ?>
                         </ul>
                     </div>
                 </div>
