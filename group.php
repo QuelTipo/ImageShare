@@ -50,17 +50,10 @@
                 
                 $temp->closeCursor();
 
-                $isMemberQ = $conn->prepare('call groups_isMember( :user , :groupid , @isMember_res)');
-                $isMemberQ->bindParam(':user', $_SESSION['user']);
-                $isMemberQ->bindParam(':groupid', $id);
-                $isMemberQ->execute();
+                $isMemberQ = $conn->query('call groups_isMember( "' . $_SESSION['user'] . '" , ' . $id . ')');
+                $temp = $isMemberQ->fetchAll();
                 $isMemberQ->closeCursor();
-                
-                $temp = $conn->prepare('select @isMember_res as res');
-                $temp->execute();
-                $isMember = $temp->fetchColumn();
-                
-                $temp->closeCursor();
+                $isMember = $temp[0][0] == 1;
             }
 
             $memberQ = $conn->query('call groups_getMembers(' . $id . ')');
@@ -98,9 +91,9 @@
             }
             if($isAdmin)
             {
-                echo '<form action="addMember.php" method="post">';
+                echo '<form action="addGroupAlbum.php" method="post">';
                     echo '<input type="submit" name="submit" value="Add Member">';
-                    echo '<input type="text" placeholder="username" name="user">';
+                    echo '<input type="text" placeholder="album name" name="album">';
                     echo '<input type="text" hidden name="group" value="' . $id . '">';
                 echo '</form>';
             }
@@ -108,12 +101,21 @@
        
         function get_albumList()
         {
-            global $allAlbums;
+            global $allAlbums; global $isAdmin; global $id;
             foreach ($allAlbums as $curAlbum)
             {
                 echo '<li>';
                     echo '<a href="album.php?album=' . $curAlbum['ID'] . '">' . $curAlbum['title'] . '</a>';
                 echo '</li>';
+            }
+            
+            if($isAdmin)
+            {
+                echo '<form action="addMember.php" method="post">';
+                    echo '<input type="submit" name="submit" value="Add Member">';
+                    echo '<input type="text" placeholder="username" name="user">';
+                    echo '<input type="text" hidden name="group" value="' . $id . '">';
+                echo '</form>';
             }
         }
 

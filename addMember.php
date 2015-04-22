@@ -3,11 +3,6 @@ include 'menu.php';
 $username = filter_input(INPUT_POST,'user');
 $group = filter_input(INPUT_POST,'group');
 
-print_r($group);
-echo '<br>';
-print_r($username);
-echo'<br>';
-
 try {
     $conn = new PDO('mysql:host=localhost;dbname=imageshare', 'imageshare', 'sharemeplease!@#');
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
