@@ -31,6 +31,7 @@ and open the template in the editor.
                     if($_SESSION['user']==null) {
                         echo '<li><a href="index2.php">Log In</a></li>';
                     } else {
+                        echo '<li><a href="logout.php">Log Out</a></li>';
                         echo '<li><a href="profile.php?user='.$_SESSION['user'].'">'.$_SESSION['user'].'</a></li>';
                     }
                 ?>
