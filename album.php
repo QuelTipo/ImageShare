@@ -149,8 +149,10 @@
                 $user = $_SESSION['user'];
                 $result1=$connect1->query("call users_canViewMedia('$image->ID','$user')");
                 $result1=$result1->fetch_object();
-                $canview
-                if ($album->group_id == null) 
+                $canview;
+                if ($album->group_id == null)  {
+                    
+                }
             }
             
         }
