@@ -27,12 +27,15 @@ end//
 --   and processes this on the page after the information
 --   has been retrieved.
 
+
 create procedure album_getImagesByPk(in i_id int)
 begin
-    select title, filename, private
-    from media
-    where albID = i_id;
+    select m.filename,m.ID,m.owner_name
+    from album_of_media as a,media as m
+    where a.albID = i_id and
+          m.ID = a.mediaID;
 end//
+
 
 -- This deletes an album. Clearly you're going to want to check if it belongs
 -- to the entity doing the deleting first by using users_isUsersAlbum
