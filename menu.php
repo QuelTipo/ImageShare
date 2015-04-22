@@ -24,12 +24,12 @@ and open the template in the editor.
                             }
                         ?>
                     <li><a href="browse.php?page=1">Browse</a></li>
-                                
+                    <li><a href="upload.php">Upload</a></li>
       		</ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php
                     if($_SESSION['user']==null) {
-                        echo '<li><a href="#">Log In</a></li>';
+                        echo '<li><a href="index2.php">Log In</a></li>';
                     } else {
                         echo '<li><a href="profile.php?user='.$_SESSION['user'].'">'.$_SESSION['user'].'</a></li>';
                     }
