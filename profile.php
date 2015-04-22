@@ -45,12 +45,14 @@
                             ?>
                         </p>
                     <?php
+                    if (isSet($_SESSION['user'])) {
                         if (!isFriendQuery($_SESSION['user'])) {
                             $toFriend = $_GET['user'];
                             echo '<form action="add_friend.php?id='.$toFriend.'" method="post">';
                             echo '<input type="submit" name="submit" value="Send Friend Request">';
                             echo '</form>';
                         }
+                    }
                     ?>
                 </div></div>
                 <div class="panel panel-default">
@@ -70,8 +72,19 @@
                     <div class="panel-body">
                         <ul>
                             <?php getAlbumList();?>
+                            
                         </ul>
-                    </div>
+                        <?php 
+                            if ($_GET['user']==$_SESSION['user']) {
+                                $user = $_GET['user'];
+                                echo '<form action="add_album.php?user='.$user.'" method="post" enctype="multipart/form-data">
+                                   Album title:<input type="text" name="title"><br>
+                                   Private: <input type="checkbox" name="private"><br>
+                                   <input type="submit" value="Create New Album" name="submit"><br>
+                                   </form>';
+                            }
+                        ?>
+                     </div>
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -80,6 +93,16 @@
                     <div class="panel-body">
                         <ul>
                             <?php getGroupList();?>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Cameras
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <?php getCameraList();?>
                         </ul>
                     </div>
                 </div>
@@ -118,7 +141,13 @@
                 $width = MAXWIDTH;
             }
             echo '<div align="center">';
-            echo '<a href="image.php?id='.$picture->ID.'"><img class="img-responsive" width="'.$width.'" height="'.$height.'" src ="Pictures/'.$_GET['user'].'/'.$picture->filename.'"/></a>';
+            echo '<a href="image.php?id='.$picture->ID.'">';
+            if ($picture->flag == 1) {
+                echo '<video autoplay loop muted ';
+            } else {
+                echo '<img ';
+            }
+            echo 'class="img-responsive" width="'.$width.'" height="'.$height.'" src ="Pictures/'.$_GET['user'].'/'.$picture->filename.'"/></a>';
             echo '</div>';
             
         }
@@ -130,7 +159,7 @@
             }
         }
         function getImageDetails($media) {
-            if (!isMovie($media)) {
+            
                 echo '<div class="panel panel-default">';
                     echo '<div class="panel-heading">';
                         echo '<h3>'.$media->title.'</h3>';
@@ -152,7 +181,7 @@
                 echo '</div>';
                 echo '</div>';
                 echo '</div>';  
-            }
+            
         }
         
         function resizeHeight($height,$width) {
@@ -211,6 +240,16 @@
             }
         }
         
+        function getCameraList() {
+            $user = $_GET['user'];
+            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
+            $result = $connect->query("CALL users_getCameras('$user')") or die("Error");
+            while ($row = $result->fetch_object()) {
+                echo '<li>';
+                echo '<a href="#">'.$row->cam_man.' '.$row->cam_model.'</a>';
+                echo '</li>';
+            }
+        }        
         function getDisplayName($user) {
             $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
             $name_rs = $connect->query("CALL users_getDisplayName('$user')") or die ("Query Error");

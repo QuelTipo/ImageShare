@@ -25,7 +25,7 @@ and open the template in the editor.
         <?php include("menu.php"); 
             if (!isset($_SESSION['user']))
             {
-                header('location index2.php');
+                header('location:index2.php');
             }
             
             try

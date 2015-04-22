@@ -59,12 +59,12 @@
                 $connect=mysqli_connect('localhost','root','Hibobhi02','imageshare');
                 $result=$connect->query("call users_getDisplayName('$album->owner_name')") or die("Query error");
                 $result=$result->fetch_object();
-                echo 'Owner Name: <a href="user.php?user='.$album->owner_name.'">'.$result->displayname.'</a>';
+                echo 'Owner Name: <a href="profile.php?user='.$album->owner_name.'">'.$result->displayname.'</a>';
             } else {
                $connect=mysqli_connect('localhost','root','Hibobhi02','imageshare');
                 $result=$connect->query("call groups_getByPk('$album->group_id')") or die("Query error");
                 $result=$result->fetch_object();
-                echo 'Owner Group: <a href="group.php?group="'.$album->group_id.'">'.$result->group_name.'</a>';
+                echo 'Owner Group: <a href="group.php?group='.$album->group_id.'">'.$result->group_name.'</a>';
             }
         }
         
@@ -83,7 +83,7 @@
                     $canview=$result1->result;
                     if (($album->group_id != null) && ($canview==0))  {
                         $connect2=mysqli_connect('localhost','root','Hibobhi02','imageshare');
-                        $result3=$connect3->query("call groups_isMember2('$user','$album->group_id')");
+                        $result3=$connect2->query("call groups_isMember2('$user','$album->group_id')");
                         $result3=$result3->fetch_object();
                         $canview=$result3->result;
                     }                        
@@ -100,7 +100,12 @@
         function getImageThumb($image) {
             echo '<div class="col-lg-3 col-md-4 col-xs-6 thumb">';
                 echo '<a class="thumbnail" href="image.php?id='.$image->ID.'">';
-                    echo '<img class="img-responsive my-thumb" src="Pictures/'.$image->owner_name.'/'.$image->filename.'" alt="">';
+                    if ($image->flag == 1) {
+                        echo '<video autoplay loop muted ';
+                    } else {
+                        echo '<img ';
+                    }
+                    echo 'class="img-responsive my-thumb" src="Pictures/'.$image->owner_name.'/'.$image->filename.'" alt="">';
                 echo '</a>';
             echo '</div>';
         }
@@ -126,9 +131,7 @@
         function doSideBar($album) {
             echo '<div class="col-lg-2">';
                 echo '<div class="panle panel-group"><div class="panel-body no-padding">';
-                    echo '<p>';
-                    echo 'HIIIIIII';
-                    echo '</p>';
+                    
                 echo '</div></div>';
             echo '<div class="panel panel-default">
                     <div class="panel-heading">
