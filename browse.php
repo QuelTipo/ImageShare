@@ -55,7 +55,7 @@
                     $i = 0;
                     foreach($all as $aThumb) { ?>
                         <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                            <a class="thumbnail" href="<?php echo '"/image.php?id=' . $aThumb['ID'];?>">
+                            <a class="thumbnail" href="<?php echo 'image.php?id=' . $aThumb['ID'];?>">
                                 <?php 
                                 if ($aThumb['flag'] == 1) {
                                     echo '<video ';
