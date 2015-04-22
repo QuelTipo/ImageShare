@@ -226,9 +226,11 @@ begin
 	order by id desc;
 end//
 
+delimiter $$
 create procedure media_getMaxPage()
 begin
 	declare nextNum int;
+        declare newthing double;
 
 	SELECT `AUTO_INCREMENT`
 	FROM  INFORMATION_SCHEMA.TABLES
@@ -236,9 +238,10 @@ begin
 	AND   TABLE_NAME   = 'media'
 	into nextNum;
 	set nextNum = nextNum - 1;
-	
-	select CEIL(nextNum/16) as maxPage from dual;
+	set newthing = nextNum / 16;
+	select CEIL(newthing) as maxPage from dual;
 
-end//
+end$$
 
 delimiter ;
+

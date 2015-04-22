@@ -29,7 +29,7 @@ end//
 --   displayname, and password
 --
 
-delimiter //
+
 create procedure users_enterUser(in i_username varchar(10),
 				 in i_displayname varchar(20),
 				 in i_pass varchar(20),
@@ -38,7 +38,7 @@ begin
     insert into users (username,displayname,pass,statement) 
     values (i_username,i_displayname,i_pass,i_statement);
 end//
-delimiter ;
+
 
 
 --
@@ -271,8 +271,7 @@ end//
 --    is viewable by a given user if the media is marked private.
 
 create procedure users_canViewMedia(in i_media_id int,
-                                    in i_username varchar(10),
-                                    out permit bool)
+                                    in i_username varchar(10))
 begin
     declare user_name varchar(10);
     select owner_name into user_name from media
