@@ -127,7 +127,7 @@ begin
 end//
 
 -- 
---	This returns the list of groups the member is involved in.
+-- This returns the list of groups the member is involved in.
 --
 
 create procedure users_getGroups(in i_username_1 varchar(10))

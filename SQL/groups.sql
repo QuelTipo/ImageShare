@@ -56,7 +56,6 @@ end//
 
 -- We do the same with group members as we do with admins.*/
 
-delimiter //
 create procedure groups_isMember(in i_username_1 varchar(10),
 				 in group_id int)
 begin
@@ -69,7 +68,6 @@ begin
         select 0 as result;
     end if;
 end//
-delimiter ;
 
 -- This checks to see if a particular album belongs to a group.
 
@@ -97,10 +95,12 @@ end//
 
 -- This procedure will be invoked by the admin to add the
 --   prospective group member into the group
+delimiter //
 
+drop procedure groups_addMember//
 create procedure groups_addMember(in i_username_1 varchar(10), in i_ID int)
 begin
-    insert into group_members (groupID,username) values (i_ID,i_username_1);
+    insert into group_members (groupID,userID) values (i_ID,i_username_1);
 end//
 
 -- This procedure will be invoked by the admin to remove a group
@@ -109,10 +109,8 @@ end//
 create procedure groups_removeMember(in i_username varchar(10), in i_ID int)
 begin
     delete from group_members where groupID=i_ID and
-				    username=i_username;
+				    userID=i_username;
 end//
-
-delimiter //
 
 create procedure groups_getMedia(in i_id int, in i_private boolean)
 begin
@@ -124,5 +122,7 @@ begin
 		on a.id = am.albID
 	where a.group_id=i_id and a.private=i_private;
 end//
+
+
 
 delimiter ;

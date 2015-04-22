@@ -85,16 +85,24 @@
 
         function get_groupMemberList()
         {
-            global $allMembers; global $isAdmin;
+            global $allMembers; global $isAdmin; global $id;
             foreach ($allMembers as $curMember)
             {
                 echo '<li>';
                     echo '<a href="profile.php?user=' . $curMember['username'] . '">' . $curMember['displayname'] . '</a>';
                     if($isAdmin)
                     {
-                        echo '<a href="#" class="pull-right">remove</a>';
+                        echo '<a href="removeMember.php?group=' . $id . '&user=' . $curMember['username'] . '" class="pull-right">remove</a>';
                     }
                 echo '</li>';
+            }
+            if($isAdmin)
+            {
+                echo '<form action="addMember.php" method="post">';
+                    echo '<input type="submit" name="submit" value="Add Member">';
+                    echo '<input type="text" placeholder="username" name="user">';
+                    echo '<input type="text" hidden name="group" value="' . $id . '">';
+                echo '</form>';
             }
         }
        
