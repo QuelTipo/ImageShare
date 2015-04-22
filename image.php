@@ -69,7 +69,8 @@
             	<div class="panel panel-default">
                     <div class="panel-body">
                     	<div class="row text-center">
-                                <?php 
+                            <div align="center">    
+                            <?php 
                                 if ($imageInfo['flag'] == 1) {
                                     echo '<video controls ';
                                 } elseif ($imageInfo['flag'] == 0) {
@@ -77,6 +78,7 @@
                                 }
                                 echo 'class="img-responsive" src="Pictures/' . $imageInfo['owner_name'] . '/' . $imageInfo['filename'] . '" alt="">';
                                 ?>
+                            </div>
                         </div>
                     </div>
                     <div class="caption">
