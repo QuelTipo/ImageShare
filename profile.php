@@ -46,7 +46,10 @@
                         </p>
                     <?php
                         if (!isFriendQuery($_SESSION['user'])) {
-                            echo '<a href="#" class="btn btn-default">Send Friend Request</a>';
+                            $toFriend = $_GET['user'];
+                            echo '<form action="add_friend.php?id='.$toFriend.'" method="post">';
+                            echo '<input type="submit" name="submit" value="Send Friend Request">';
+                            echo '</form>';
                         }
                     ?>
                 </div></div>
