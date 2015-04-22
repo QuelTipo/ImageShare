@@ -77,14 +77,18 @@
             while($image=$result->fetch_object()) {
                 $connect1=mysqli_connect('localhost','root','Hibobhi02','imageshare');
                 $user = $_SESSION['user'];
-                $result1=$connect1->query("call users_canViewMedia('$image->ID','$user')");
-                $result1=$result1->fetch_object();
-                $canview=$result1->result;
-                if (($album->group_id != null) && (canview==0))  {
-                    $connect2=mysqli_connect('localhost','root','Hibobhi02','imageshare');
-                    $result3=$connect3->query("call groups_isMember('$user','$album->group_id')");
-                    $result3=$result3->fetch_object();
-                    $canview=$result3->result;
+                if ($image->private) {
+                    $result1=$connect1->query("call users_canViewMedia('$image->ID','$user')");
+                    $result1=$result1->fetch_object();
+                    $canview=$result1->result;
+                    if (($album->group_id != null) && ($canview==0))  {
+                        $connect2=mysqli_connect('localhost','root','Hibobhi02','imageshare');
+                        $result3=$connect3->query("call groups_isMember2('$user','$album->group_id')");
+                        $result3=$result3->fetch_object();
+                        $canview=$result3->result;
+                    }                        
+                } else {
+                   $canview=1;
                 }
                 if ($canview == 1) {
                     getImageThumb($image);
@@ -110,7 +114,7 @@
                 $result=$result->fetch_object();
                 $needSideBar = $result->result;
             } else {
-                $result=$connect->query("call groups_isMember('$viewer','$album->group_id')");
+                $result=$connect->query("call groups_isMember2('$viewer','$album->group_id')");
                 $result=$result->fetch_object();
                 $needSideBar = $result->result;
             }

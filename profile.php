@@ -46,7 +46,10 @@
                         </p>
                     <?php
                         if (!isFriendQuery($_SESSION['user'])) {
-                            echo '<a href="#" class="btn btn-default">Send Friend Request</a>';
+                            $toFriend = $_GET['user'];
+                            echo '<form action="add_friend.php?id='.$toFriend.'" method="post">';
+                            echo '<input type="submit" name="submit" value="Send Friend Request">';
+                            echo '</form>';
                         }
                     ?>
                 </div></div>
@@ -115,7 +118,7 @@
                 $width = MAXWIDTH;
             }
             echo '<div align="center">';
-            echo '<a href="media.php?id='.$picture->ID.'"><img class="img-responsive" width="'.$width.'" height="'.$height.'" src ="Pictures/'.$_GET['user'].'/'.$picture->filename.'"/></a>';
+            echo '<a href="image.php?id='.$picture->ID.'"><img class="img-responsive" width="'.$width.'" height="'.$height.'" src ="Pictures/'.$_GET['user'].'/'.$picture->filename.'"/></a>';
             echo '</div>';
             
         }
@@ -141,8 +144,11 @@
                 echo $media->description;
                 echo '</div>';
                 echo '<div class="text-right">';
-                echo '<a href="#">Cannon Powershot</a><br>';
-                echo '<a href="#">Calgary, Alberta Canada</a>';
+                if ($_GET['user']==$_SESSION['user']) {
+                    echo '<form action="delete_media.php?id='.$media->ID.'" method="post">';
+                    echo '<input type="submit" name="submit" value="Delete">';
+                    echo '</form>';
+                }
                 echo '</div>';
                 echo '</div>';
                 echo '</div>';  
