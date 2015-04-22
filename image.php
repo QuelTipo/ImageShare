@@ -36,15 +36,6 @@
                     {
                         $ttext = filter_input(INPUT_POST, 'tText');
                         $user = $_SESSION['user'];
-                        /*$queryText = 'call media_addComment(' . $id . ',';
-                        if(isset($user))
-                        {
-                            $queryText .= '"' . $user . '"';
-                        } else
-                        {
-                            $queryText .= 'NULL';
-                        }
-                        $queryText .= ', "' . $ttext . '")';*/
                         $stmt = $conn->prepare('call media_addComment( :id, :user, :ttext)');
                         $stmt->execute(array(
                             ':id' => $id,
@@ -93,7 +84,7 @@
                         </p>
                         <div class="info">
                             <p>
-                                Taken by: <a href="profile.php?username=<?php echo $imageInfo['username'] ?>"><?php echo $imageInfo['displayname'] ?></a><br>                                
+                                Taken by: <a href="profile.php?user=<?php echo $imageInfo['username'] ?>"><?php echo $imageInfo['displayname'] ?></a><br>                                
                                 Added on <?php echo date('F jS\, Y', strtotime(str_replace('-','/', $imageInfo['upload_date'])))?></br>
                                 Resolution: <?php echo $imageInfo['height'] . 'x' . $imageInfo['width'] ?>
                                 <a href="#" class="pull-right"><?php echo $imageInfo['manufacturer'] . ' ' . $imageInfo['model'] ?></a><br>
@@ -132,7 +123,7 @@
                                 </div>
                             </li>
                             <br>
-                            <?php } ?>
+                            <?php } ?>Hibbard
                         </ul>
                     </div>
                 </div>

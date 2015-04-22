@@ -109,7 +109,6 @@ begin
 	longitude,
 	latitude,
 	owner_name,
-    private,
 	flag,
 	extraparam1,
 	extraparam2,
