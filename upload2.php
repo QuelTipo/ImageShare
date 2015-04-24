@@ -52,7 +52,7 @@
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {       
             try
             {
-                $conn = new PDO('mysql:host=localhost;dbname=imageshare', 'imageshare', 'sharemeplease!@#');
+                $conn = new PDO('mysql:host=localhost;dbname=imageshare', 'imageshare', 'pass');
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                 $locationVal = filter_input(INPUT_POST, 'location');

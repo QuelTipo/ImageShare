@@ -18,7 +18,7 @@ and open the template in the editor.
             if (!isSet($_POST['private'])) {
                 $private = false;
             }
-            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
+            $connect = mysqli_connect('localhost','root','pass','imageshare');
             $connect->query("call users_createAlbum('$user','$title','private')") or die("Query error");
             header("location:profile.php?user=$user");
         ?>

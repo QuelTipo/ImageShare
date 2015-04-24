@@ -13,7 +13,7 @@ and open the template in the editor.
         <?php
             $media=$_POST['mediaid'];
             $album=$_GET['album'];
-            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
+            $connect = mysqli_connect('localhost','root','pass','imageshare');
             $connect->query("call users_addMediatoAlbum('$media','$album')") or die("Query error");
             header("location:album.php?album=$album");
         ?>

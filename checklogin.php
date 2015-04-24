@@ -11,7 +11,7 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare') or die("Can't connect");
+            $connect = mysqli_connect('localhost','root','pass','imageshare') or die("Can't connect");
             $myusername = $_POST['myusername'];
             $mypassword = $_POST['mypassword'];
             $result = mysqli_query($connect,"CALL users_login('$myusername','$mypassword')") or die("Query failed");

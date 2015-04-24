@@ -23,7 +23,7 @@
 	<?php include("menu.php");
             
             $id = $_GET['album'];
-            $connect = $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
+            $connect = $connect = mysqli_connect('localhost','root','pass','imageshare');
             $result = $connect->query("CALL album_getByPk('$id')") or die("Error");
             $album = $result->fetch_object();
         ?>

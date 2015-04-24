@@ -14,7 +14,7 @@ and open the template in the editor.
             session_start();
             $user = $_SESSION['user'];
             $media=$_GET['id'];
-            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
+            $connect = mysqli_connect('localhost','root','pass','imageshare');
             $connect->query("call media_deleteMedia('$media')") or die("Query error");
             header("location:profile.php?user=$user");
         ?>

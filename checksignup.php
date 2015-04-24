@@ -11,7 +11,7 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare') or die("Can't connect");
+            $connect = mysqli_connect('localhost','root','pass','imageshare') or die("Can't connect");
             
             if ((empty($_POST['myusername'])) || (empty($_POST['mypassword'])) || (empty($_POST['mydisplayname'])) || (empty($_POST['mystatement']))) {
                 header("location:newuser.php");
@@ -29,9 +29,9 @@ and open the template in the editor.
                     $_SESSION['signupfail'] = 1;
                     header("location:newuser.php");
                 } else {
-                    $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare') or die("Can't connect");
+                    $connect = mysqli_connect('localhost','root','pass','imageshare') or die("Can't connect");
                     $result = mysqli_query($connect,"CALL users_enterUser('$myusername','$mydisplayname','$mypassword','$mystatement')");
-                    $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare') or die("Can't connect");
+                    $connect = mysqli_connect('localhost','root','pass','imageshare') or die("Can't connect");
                     $result = mysqli_query($connect,"CALL users_addNewFriend('$myusername','$myusername')");
                     mkdir('Pictures/'.$myusername.'/',0777,true);
                     session_start();

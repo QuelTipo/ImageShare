@@ -33,7 +33,7 @@
         
         try
         {
-            $conn = new PDO('mysql:host=localhost;dbname=imageshare', 'imageshare', 'sharemeplease!@#');
+            $conn = new PDO('mysql:host=localhost;dbname=imageshare', 'imageshare', 'pass');
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             if(isset($_SESSION['user']))

@@ -14,7 +14,7 @@ and open the template in the editor.
             session_start();
             $user = $_SESSION['user'];
             $friend=$_GET['id'];
-            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
+            $connect = mysqli_connect('localhost','root','pass','imageshare');
             $connect->query("call users_addNewFriend('$user','$friend')") or die("Query error");
             header("location:profile.php?user=$friend");
         ?>

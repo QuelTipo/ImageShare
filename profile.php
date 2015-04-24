@@ -135,12 +135,12 @@
         function getMediaOfUser() {
             $user = $_GET['user'];
             $isFriend = isFriendQuery($_SESSION['user']);
-            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
+            $connect = mysqli_connect('localhost','root','pass','imageshare');
             $result = $connect->query("CALL users_getMediaID('$user','$isFriend')") or die("Error");
             return $result;
         }
         function getMediaInfo($id) {
-            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
+            $connect = mysqli_connect('localhost','root','pass','imageshare');
             $result = $connect->query("CALL media_getByPk('$id')") or die("Error");
             return $result->fetch_object();
         }
@@ -201,7 +201,7 @@
         }
         
         function isFriendQuery($viewer) {
-            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
+            $connect = mysqli_connect('localhost','root','pass','imageshare');
             $pageowner = $_GET['user'];
             $result = $connect->query("CALL users_areFriends('$viewer','$pageowner')") or die("Error");
             $return = $result->fetch_object();
@@ -209,7 +209,7 @@
         }
         
         function getFriendList() {
-            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
+            $connect = mysqli_connect('localhost','root','pass','imageshare');
             $user = $_GET['user'];
             $result = $connect->query("CALL users_getFriends('$user')") or die("Error");
             while ($row = $result->fetch_object()) {
@@ -225,10 +225,10 @@
         function getAlbumList() {
             $user = $_GET['user'];
             $isFriend = isFriendQuery($_SESSION['user']);
-            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
+            $connect = mysqli_connect('localhost','root','pass','imageshare');
             $result = $connect->query("CALL users_getAlbums('$user','$isFriend')") or die("Error");
             while ($row = $result->fetch_object()) {
-                $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare') or die("Connect Error");
+                $connect = mysqli_connect('localhost','root','pass','imageshare') or die("Connect Error");
                 $ID_rs = $connect->query("CALL album_getByPk('$row->ID')") or die ("Query Error");
                 $ID_rs = $ID_rs->fetch_object();
                 echo '<li>';
@@ -239,7 +239,7 @@
         
         function getGroupList() {
             $user = $_GET['user'];
-            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
+            $connect = mysqli_connect('localhost','root','pass','imageshare');
             $result = $connect->query("CALL users_getGroups('$user')") or die("Error");
             while ($row = $result->fetch_object()) {
                 $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare') or die("Connect Error");
@@ -253,7 +253,7 @@
         
         function getCameraList() {
             $user = $_GET['user'];
-            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
+            $connect = mysqli_connect('localhost','root','pass','imageshare');
             $result = $connect->query("CALL users_getCameras('$user')") or die("Error");
             while ($row = $result->fetch_object()) {
                 echo '<li>';
@@ -262,14 +262,14 @@
             }
         }        
         function getDisplayName($user) {
-            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
+            $connect = mysqli_connect('localhost','root','pass','imageshare');
             $name_rs = $connect->query("CALL users_getDisplayName('$user')") or die ("Query Error");
             $name_rs2 = $name_rs->fetch_object();
             return $name_rs2->displayname;
         }
         
         function getStatement($user) {
-            $connect = mysqli_connect('localhost','root','Hibobhi02','imageshare');
+            $connect = mysqli_connect('localhost','root','pass','imageshare');
             $name_rs = $connect->query("CALL users_getStatement('$user')") or die ("Query Error");
             $name_rs2 = $name_rs->fetch_object();
             return $name_rs2->statement;
